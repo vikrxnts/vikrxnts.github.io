@@ -2,37 +2,35 @@
 <html>
 <head>
 <style>
-  /* 1. LAYOUT SETTINGS */
+  /* --- 1. LAYOUT & BACKGROUND --- */
   body {
     margin: 0;
-    padding: 0;
-    height: 100vh; /* Full screen height */
-    font-family: 'Arial', sans-serif;
-    overflow: hidden; /* No scrollbars */
-    
-    /* Flexbox centers the pink box perfectly */
+    height: 100vh;
+    overflow: hidden; /* Important to keep hearts inside screen */
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Arial', sans-serif;
   }
 
-  /* 2. VIDEO BACKGROUND STYLE */
+  /* Video Background */
   #video-bg {
     position: fixed;
     right: 0;
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
-    z-index: -1; /* Puts video BEHIND everything */
+    z-index: -1;
     object-fit: cover;
-    filter: brightness(0.5); /* Darkens video so pink box pops! */
+    filter: brightness(0.5); /* Darken video so text pops */
   }
 
-  /* 3. THE PINK BOX STYLE */
+  /* --- 2. THE PINK BOX --- */
   .valentine-box {
     background-color: #ffb6c1; /* Light Pink */
-    width: 300px;
-    height: 300px;
+    width: 350px; /* Made slightly wider for the moving button */
+    height: 350px;
+    position: relative; /* Needed for the No button to move inside */
     
     display: flex;
     flex-direction: column;
@@ -42,38 +40,82 @@
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     text-align: center;
+    z-index: 10; /* Keeps box on top of rain */
   }
 
   h1 {
     color: #d6336c;
-    font-size: 24px;
-    margin-bottom: 30px;
+    font-size: 28px;
+    margin-bottom: 20px;
+    line-height: 1.4;
   }
 
-  /* 4. BUTTON STYLES */
+  /* --- 3. BUTTONS --- */
+  .btn-container {
+    display: flex;
+    gap: 15px; /* Space between buttons */
+    margin-top: 20px;
+  }
+
   .btn {
-    padding: 10px 20px;
+    padding: 12px 25px;
     font-size: 18px;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px; /* Rounded pill shape */
     cursor: pointer;
-    margin: 5px;
     transition: transform 0.2s;
   }
 
   .yes-btn {
-    background-color: #28a745; /* Green */
+    background-color: #ff1493; /* Deep Pink */
     color: white;
+    font-weight: bold;
+  }
+  
+  .yes-btn:hover {
+    transform: scale(1.1); /* Grows when hovered */
   }
 
+  /* The tricky "No" button */
   .no-btn {
-    background-color: #dc3545; /* Red */
-    color: white;
+    background-color: white;
+    color: #d6336c;
+    font-weight: bold;
+    position: absolute; /* Allows us to move it anywhere */
+    bottom: 80px; /* Starting position */
+    right: 80px;
   }
 
-  .btn:hover {
-    transform: scale(1.1);
+  /* --- 4. HEART RAIN ANIMATION --- */
+  .heart {
+    position: fixed;
+    color: #ff69b4; /* Hot Pink */
+    font-size: 24px;
+    top: -20px;
+    animation: fall linear forwards;
+    z-index: 5; /* Behind the box but in front of video */
   }
+
+  @keyframes fall {
+    to {
+      transform: translateY(105vh); /* Fall to bottom of screen */
+    }
+  }
+  
+  /* The "Love You" Message Style */
+  .love-message {
+    font-size: 40px;
+    color: #c2185b;
+    font-weight: bold;
+    animation: popIn 0.5s ease-out;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0); }
+    80% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
 </style>
 </head>
 <body>
@@ -82,22 +124,62 @@
     <source src="Snapchat-670290036.mp4" type="video/mp4">
   </video>
 
-  <div class="valentine-box">
+  <div class="valentine-box" id="mainBox">
     <h1>Will you be my<br>Valentine? 💌</h1>
     
-    <div>
-      <button class="btn yes-btn" onclick="sayYes()">Yes</button>
-      <button class="btn no-btn" onclick="sayNo()">No</button>
+    <div class="btn-container">
+      <button class="btn yes-btn" onclick="celebrateLove()">YES! ❤️</button>
+      <button class="btn no-btn" id="noBtn" onmouseover="moveButton()">No</button>
     </div>
   </div>
 
   <script>
-    function sayYes() {
-      alert("Yay! ❤️ See you on the 14th!");
+    // 1. Function to make the "No" button run away
+    function moveButton() {
+      const btn = document.getElementById('noBtn');
+      const box = document.getElementById('mainBox');
+      
+      // Calculate new random positions inside the box
+      // We subtract 60 to keep it from going outside the borders
+      const newX = Math.random() * (box.offsetWidth - 80); 
+      const newY = Math.random() * (box.offsetHeight - 60);
+      
+      btn.style.left = newX + 'px';
+      btn.style.top = newY + 'px';
     }
 
-    function sayNo() {
-      alert("Wrong answer! Try again. 😢");
+    // 2. Function for when she clicks YES
+    function celebrateLove() {
+      const box = document.getElementById('mainBox');
+      
+      // Replace the text inside the box
+      box.innerHTML = "<div class='love-message'>I Love You! <br>💖Forever💖</div>";
+      
+      // Start the heart rain
+      setInterval(createHeart, 100); // New heart every 0.1 seconds
+    }
+
+    // 3. Function to create a single falling heart
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.innerHTML = "❤️"; // You can change this to 🌸 or 💖
+      heart.classList.add('heart');
+      
+      // Random start position (left to right)
+      heart.style.left = Math.random() * 100 + "vw";
+      
+      // Random size
+      heart.style.fontSize = Math.random() * 20 + 10 + "px";
+      
+      // Random fall speed
+      heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+      
+      document.body.appendChild(heart);
+      
+      // Remove heart after it falls to keep browser fast
+      setTimeout(() => {
+        heart.remove();
+      }, 5000);
     }
   </script>
 
