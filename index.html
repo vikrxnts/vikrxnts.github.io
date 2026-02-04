@@ -2,38 +2,77 @@
 <html>
 <head>
 <style>
+  /* 1. LAYOUT SETTINGS */
   body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    overflow: hidden; /* Stops scrollbars from appearing */
+    height: 100vh; /* Full screen height */
+    font-family: 'Arial', sans-serif;
+    overflow: hidden; /* No scrollbars */
+    
+    /* Flexbox centers the pink box perfectly */
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  /* This styles the video to cover the screen */
+  /* 2. VIDEO BACKGROUND STYLE */
   #video-bg {
     position: fixed;
     right: 0;
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
-    z-index: -1; /* Puts video BEHIND the text */
-    object-fit: cover; /* Ensures no black bars */
-    filter: brightness(0.4); /* Darkens video so text is readable */
+    z-index: -1; /* Puts video BEHIND everything */
+    object-fit: cover;
+    filter: brightness(0.5); /* Darkens video so pink box pops! */
   }
 
-  /* This centers your text on top */
-  .content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  /* 3. THE PINK BOX STYLE */
+  .valentine-box {
+    background-color: #ffb6c1; /* Light Pink */
+    width: 300px;
+    height: 300px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     text-align: center;
-    color: white;
   }
 
   h1 {
-    font-size: 4rem;
-    margin-bottom: 0;
+    color: #d6336c;
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  /* 4. BUTTON STYLES */
+  .btn {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    transition: transform 0.2s;
+  }
+
+  .yes-btn {
+    background-color: #28a745; /* Green */
+    color: white;
+  }
+
+  .no-btn {
+    background-color: #dc3545; /* Red */
+    color: white;
+  }
+
+  .btn:hover {
+    transform: scale(1.1);
   }
 </style>
 </head>
@@ -43,10 +82,24 @@
     <source src="Snapchat-670290036.mp4" type="video/mp4">
   </video>
 
-  <div class="content">
-    <h1>VIKRXNTS</h1>
-    <p>Python Developer & Coder</p>
+  <div class="valentine-box">
+    <h1>Will you be my<br>Valentine? 💌</h1>
+    
+    <div>
+      <button class="btn yes-btn" onclick="sayYes()">Yes</button>
+      <button class="btn no-btn" onclick="sayNo()">No</button>
+    </div>
   </div>
+
+  <script>
+    function sayYes() {
+      alert("Yay! ❤️ See you on the 14th!");
+    }
+
+    function sayNo() {
+      alert("Wrong answer! Try again. 😢");
+    }
+  </script>
 
 </body>
 </html>
