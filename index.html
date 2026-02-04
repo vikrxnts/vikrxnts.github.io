@@ -1,7 +1,52 @@
 <!DOCTYPE html>
 <html>
+<head>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden; /* Stops scrollbars from appearing */
+  }
+
+  /* This styles the video to cover the screen */
+  #video-bg {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1; /* Puts video BEHIND the text */
+    object-fit: cover; /* Ensures no black bars */
+    filter: brightness(0.4); /* Darkens video so text is readable */
+  }
+
+  /* This centers your text on top */
+  .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+  }
+
+  h1 {
+    font-size: 4rem;
+    margin-bottom: 0;
+  }
+</style>
+</head>
 <body>
-<h1>Hello World!</h1>
-<p>This is my first website hosted on GitHub.</p>
+
+  <video autoplay muted loop playsinline id="video-bg">
+    <source src="Snapchat-670290036.mp4" type="video/mp4">
+  </video>
+
+  <div class="content">
+    <h1>VIKRXNTS</h1>
+    <p>Python Developer & Coder</p>
+  </div>
+
 </body>
 </html>
